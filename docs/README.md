@@ -23,6 +23,7 @@
 2. [Руководство разработчика](guides/02_Руководство_разработчика.md)
 3. [Интеграция с GitHub](guides/03_Интеграция_с_GitHub.md)
 4. [GitHub в VS Code на Windows](guides/04_GitHub_в_VS_Code_Windows.md)
+5. [Облачный хостинг на Render](guides/05_Хостинг_Render.md)
 
 ## Правило обновления
 

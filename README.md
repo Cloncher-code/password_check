@@ -11,7 +11,7 @@
 | Windows | двойной щелчок по `scripts\run_windows.bat` |
 | macOS / Linux | `bash scripts/run_mac.sh` |
 
-Откройте http://127.0.0.1:8000. Подробно, с ручной установкой и решением проблем — [docs/guides/01_Запуск_локально_Windows_macOS.md](docs/guides/01_Запуск_локально_Windows_macOS.md).
+Откройте http://127.0.0.1:8000. Облачный хостинг (Render, бесплатно) — [docs/guides/05_Хостинг_Render.md](docs/guides/05_Хостинг_Render.md). Подробно, с ручной установкой и решением проблем — [docs/guides/01_Запуск_локально_Windows_macOS.md](docs/guides/01_Запуск_локально_Windows_macOS.md).
 
 Вручную (нужен Python 3.11+, проверка: `python --version`):
 
@@ -94,3 +94,4 @@ docs/           БТ, СТ, отчёты QC, тест-план, UAT, инстр�
 | Руководство разработчика | `docs/guides/02_Руководство_разработчика.md` |
 | Интеграция с GitHub | `docs/guides/03_Интеграция_с_GitHub.md` |
 | GitHub в VS Code на Windows | `docs/guides/04_GitHub_в_VS_Code_Windows.md` |
+| Хостинг на Render | `docs/guides/05_Хостинг_Render.md` |
