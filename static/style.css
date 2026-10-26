@@ -1,0 +1,110 @@
+/* СТ §7, НФТ-09: от 360 px, Chrome / Firefox / Edge. Без внешних шрифтов. */
+:root {
+  --bg: #eef2f7;
+  --panel: #ffffff;
+  --ink: #18243a;
+  --muted: #56627a;
+  --line: #cdd5e1;
+  --accent: #2f4b8a;
+  --accent-ink: #ffffff;
+  --focus: #1d6fe0;
+  --weak: #c62828;
+  --medium: #d96400;
+  --strong: #2e7d32;
+  --very-strong: #1b5e20;
+  --empty: #dfe5ee;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121a28;
+    --panel: #1b2536;
+    --ink: #e6ebf3;
+    --muted: #a3afc4;
+    --line: #34425a;
+    --accent: #8fa9e6;
+    --accent-ink: #0f1726;
+    --focus: #7fb0ff;
+    --weak: #ef6b6b;
+    --medium: #f29a3d;
+    --strong: #5cbf63;
+    --very-strong: #3e9e45;
+    --empty: #2c3850;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.5 "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Roboto, Arial, sans-serif;
+}
+.page { max-width: 34rem; margin: 0 auto; padding: 2.5rem 1rem 3rem; }
+
+.intro h1 { font-size: 1.75rem; line-height: 1.2; margin: 0 0 .5rem; font-weight: 650; letter-spacing: -.01em; }
+.intro p { margin: 0 0 1.5rem; color: var(--muted); }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.field-label { display: block; font-weight: 600; margin-bottom: .4rem; }
+.field-row { display: flex; gap: .5rem; }
+.field-row input {
+  flex: 1; min-width: 0;
+  font: inherit; font-size: 1.1rem;
+  padding: .7rem .8rem;
+  color: var(--ink); background: transparent;
+  border: 1px solid var(--line); border-radius: 10px;
+}
+.hint { margin: .4rem 0 0; font-size: .875rem; color: var(--muted); }
+.error { margin: .4rem 0 0; font-size: .95rem; color: var(--weak); font-weight: 600; }
+
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-top: 1rem; }
+button { font: inherit; cursor: pointer; border-radius: 10px; padding: .65rem 1.1rem; }
+.btn-primary { background: var(--accent); color: var(--accent-ink); border: 1px solid var(--accent); font-weight: 600; }
+.btn-secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); white-space: nowrap; }
+.gen { display: inline-flex; align-items: center; gap: .6rem; }
+.gen-length { display: inline-flex; align-items: center; gap: .4rem; color: var(--muted); font-size: .9rem; }
+.gen-length input {
+  width: 4.2rem; font: inherit; padding: .45rem .5rem; color: var(--ink);
+  background: transparent; border: 1px solid var(--line); border-radius: 8px;
+}
+
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+/* Шкала: 4 сегмента = 4 уровня БП-07. Цвет дублируется текстом уровня. */
+.meter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 1rem; }
+.meter span { height: 12px; border-radius: 6px; background: var(--empty); transition: background-color .25s; }
+.meter[data-level="WEAK"] span:nth-child(-n+1) { background: var(--weak); }
+.meter[data-level="MEDIUM"] span:nth-child(-n+2) { background: var(--medium); }
+.meter[data-level="STRONG"] span:nth-child(-n+3) { background: var(--strong); }
+.meter[data-level="VERY_STRONG"] span { background: var(--very-strong); }
+
+.verdict { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem; }
+.level { margin: 0; font-size: 1.5rem; font-weight: 700; }
+.level-WEAK { color: var(--weak); }
+.level-MEDIUM { color: var(--medium); }
+.level-STRONG { color: var(--strong); }
+.level-VERY_STRONG { color: var(--very-strong); }
+.score { margin: 0; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.rec-title { font-size: 1rem; margin: 1.1rem 0 .4rem; }
+.recs { margin: 0; padding-left: 1.2rem; }
+.recs li { margin: .25rem 0; }
+
+[hidden] { display: none !important; }
+
+@media (prefers-reduced-motion: reduce) { .meter span { transition: none; } }
+@media (max-width: 400px) {
+  .page { padding-top: 1.5rem; }
+  .intro h1 { font-size: 1.5rem; }
+}

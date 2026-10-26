@@ -1,0 +1,29 @@
+# Автоматический прогон тестов на каждый push и pull request.
+# Проверяет, что проект работает на Windows, macOS и Linux.
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Установить зависимости
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+      - name: Тесты и покрытие (НФТ-10: модуль оценки ≥ 90 %)
+        run: pytest --cov=app --cov-fail-under=90
+      - name: Эталонный набор совпадает с кодом
+        run: python scripts/build_reference.py

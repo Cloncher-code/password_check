@@ -1,0 +1,5 @@
+# Единые окончания строк для Windows и macOS
+* text=auto eol=lf
+*.bat text eol=crlf
+*.png binary
+*.docx binary

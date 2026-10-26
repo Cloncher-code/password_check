@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Проверка сложности пароля</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+<main class="page">
+  <header class="intro">
+    <h1>Проверка сложности пароля</h1>
+    <p>Введите пароль — покажем, насколько его сложно подобрать, и что изменить. Пароль никуда не сохраняется.</p>
+  </header>
+
+  <form id="check-form" class="panel" method="post" action="/check" novalidate>
+    <label for="password" class="field-label">Пароль</label>
+    <div class="field-row">
+      <input id="password" name="password" type="password"
+             autocomplete="off" autocapitalize="off" spellcheck="false"
+             required aria-describedby="password-error password-hint">
+      <button type="button" id="toggle" class="btn-ghost" hidden
+              aria-controls="password" aria-pressed="false">Показать</button>
+    </div>
+    <p id="password-hint" class="hint">От 1 до {{ max_length }} символов, без пробелов.</p>
+    <p id="password-error" class="error" role="alert" {% if not error %}hidden{% endif %}>{{ error or "" }}</p>
+
+    <div class="actions">
+      <button type="submit" class="btn-primary">Проверить</button>
+      <span class="gen">
+        <button type="button" id="generate" class="btn-secondary" hidden>Сгенерировать</button>
+        <label id="gen-length-wrap" class="gen-length" hidden>
+          длина
+          <input id="gen-length" type="number" min="{{ gen_min }}" max="{{ gen_max }}" value="{{ gen_default }}">
+        </label>
+      </span>
+    </div>
+  </form>
+
+  <section id="result" class="panel result" aria-live="polite" {% if not result %}hidden{% endif %}>
+    <div class="meter" id="meter" data-level="{{ result.level if result else '' }}" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <div class="verdict">
+      <p id="level" class="level level-{{ result.level if result else '' }}">{{ result.level_label if result else "" }}</p>
+      <p id="score" class="score">{% if result %}Балл: {{ result.score }} из 100{% endif %}</p>
+    </div>
+    <h2 class="rec-title">Рекомендации</h2>
+    <ul id="recommendations" class="recs">
+      {% if result %}{% for r in result.recommendations %}<li data-code="{{ r.code }}">{{ r.text }}</li>{% endfor %}{% endif %}
+    </ul>
+  </section>
+</main>
+</body>
+</html>
