@@ -55,10 +55,12 @@ py -3 -m venv .venv
 .venv\Scripts\activate
 python -m pip install --upgrade pip
 pip install -r requirements-dev.txt
-uvicorn app.main:app --reload
+uvicorn app.main:app
 ```
 
-Признак активного окружения — `(.venv)` в начале строки. Флаг `--reload` перезапускает сервер при изменении кода.
+Признак активного окружения — `(.venv)` в начале строки.
+
+Режим разработки с автоперезапуском при правке кода: `uvicorn app.main:app --reload --reload-exclude "%CD%\.venv"`. Без `--reload-exclude` сервер будет бесконечно перезапускаться из-за файлов в `.venv`.
 
 Если вы в **PowerShell**, активация — `.venv\Scripts\Activate.ps1`. При ошибке «выполнение сценариев отключено» выполните один раз:
 
@@ -112,14 +114,24 @@ bash scripts/run_mac.sh
 Вручную:
 
 ```bash
-python3 -m venv .venv
+python3.12 -m venv .venv      # именно 3.11+, не просто python3
 source .venv/bin/activate
 python -m pip install --upgrade pip
 pip install -r requirements-dev.txt
-uvicorn app.main:app --reload
+uvicorn app.main:app
 ```
 
 Остановка — Ctrl+C.
+
+Скрипт сам найдёт Python 3.11+ (системный `python3` на macOS часто 3.9 — он не подходит) и пересоздаст `.venv`, если окружение было сделано на старой версии.
+
+Режим разработки с автоперезапуском при правке кода:
+
+```bash
+uvicorn app.main:app --reload --reload-exclude "$PWD/.venv"
+```
+
+Без `--reload-exclude` сервер бесконечно перезапускается из-за файлов в `.venv` (особенно если проект в папке «Документы», синхронизируемой с iCloud).
 
 ### Шаг 4. Проверить
 
@@ -172,4 +184,6 @@ python scripts/measure_perf.py
 | `ModuleNotFoundError: No module named 'app'` | команда запущена не из корня проекта | перейдите в папку, где лежат `app/` и `requirements.txt` |
 | `SSL: CERTIFICATE_VERIFY_FAILED` при `pip install` (macOS) | не установлены сертификаты | запустите `Install Certificates.command` из папки Python |
 | Ошибка сборки пакета при `pip install` | слишком новая или старая версия Python | используйте Python 3.11–3.13 |
+| В консоли бесконечно `WatchFiles detected changes in '.venv/...'. Reloading...` | `--reload` следит за файлами `.venv` | Ctrl+C; запускайте без `--reload` или с `--reload-exclude` (см. выше) |
+| В путях ошибок видно `python3.9` | окружение создано на старом Python | `rm -rf .venv` (Windows: `rmdir /s /q .venv`) и снова скрипт запуска; при необходимости `brew install python@3.12` |
 | Кнопки «Показать» и «Сгенерировать» не видны | в браузере выключен JavaScript | включите JS; без него работает только проверка, поле после неё очищается |
