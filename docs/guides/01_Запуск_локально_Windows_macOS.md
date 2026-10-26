@@ -51,7 +51,7 @@ py --version
 Откройте «Командную строку» в папке проекта: в Проводнике щёлкните в адресную строку, наберите `cmd`, нажмите Enter.
 
 ```bat
-py -3 -m venv .venv
+py -3.12 -m venv .venv     # именно 3.11+; список версий: py -0
 .venv\Scripts\activate
 python -m pip install --upgrade pip
 pip install -r requirements-dev.txt

@@ -13,7 +13,7 @@
 
 Откройте http://127.0.0.1:8000. Подробно, с ручной установкой и решением проблем — [docs/guides/01_Запуск_локально_Windows_macOS.md](docs/guides/01_Запуск_локально_Windows_macOS.md).
 
-Вручную:
+Вручную (нужен Python 3.11+, проверка: `python --version`):
 
 ```bash
 python -m venv .venv

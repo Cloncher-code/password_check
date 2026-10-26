@@ -56,7 +56,7 @@ git config --global user.email "почта-как-в-github@example.com"
 3. Создайте окружение и поставьте зависимости:
 
 ```bat
-py -3 -m venv .venv
+py -3.12 -m venv .venv     # именно 3.11+; список версий: py -0
 .venv\Scripts\activate
 pip install -r requirements-dev.txt
 ```
