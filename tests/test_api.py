@@ -32,6 +32,16 @@ def test_index_form():
     assert "maxlength" not in html  # см. QC СТ: maxlength считает UTF-16
 
 
+def test_repo_link_in_footer():
+    """TC-32 · ФТ-11 — ссылка на репозиторий в подвале, открывается безопасно."""
+    from app import config
+    html = client.get("/").text
+    assert re.search(r'<footer class="footer">\s*<a href="' + re.escape(config.REPO_URL)
+                     + r'" target="_blank" rel="noopener noreferrer">', html)
+    html = client.post("/check", data={"password": "Qwerty789!"}).text
+    assert config.REPO_URL in html   # подвал есть и на странице результата
+
+
 # ---------------------------------------------------------------- ФТ-06, §6.2
 def test_api_contract_example():
     """TC-03 · ФТ-06 — пример ответа из §6.2 один в один."""

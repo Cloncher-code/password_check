@@ -79,7 +79,7 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 pytest
 ```
 
-Ожидается `207 passed`.
+Ожидается `208 passed`.
 
 ---
 

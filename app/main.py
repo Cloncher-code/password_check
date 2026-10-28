@@ -82,6 +82,7 @@ def render(request: Request, result=None, error=None):
             "gen_min": config.GEN_MIN_LENGTH,
             "gen_max": config.GEN_MAX_LENGTH,
             "gen_default": config.GEN_DEFAULT_LENGTH,
+            "repo_url": config.REPO_URL,
         },
     )
 

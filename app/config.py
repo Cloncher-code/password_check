@@ -67,6 +67,10 @@ RECOMMENDATIONS = {
     "R-OK": "Пароль соответствует всем критериям.",
 }
 
+# --- §7: подвал страницы (CR-01) ----------------------------------------
+REPO_URL = "https://github.com/Cloncher-code/password_check"
+SITE_URL = "https://password-check-b21c.onrender.com"
+
 # --- §6.3: ошибки ---------------------------------------------------------
 ERRORS = {
     "EMPTY_PASSWORD": "Введите пароль.",

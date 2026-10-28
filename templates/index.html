@@ -51,6 +51,10 @@
       {% if result %}{% for r in result.recommendations %}<li data-code="{{ r.code }}">{{ r.text }}</li>{% endfor %}{% endif %}
     </ul>
   </section>
+
+  <footer class="footer">
+    <a href="{{ repo_url }}" target="_blank" rel="noopener noreferrer">Исходный код и документация на GitHub</a>
+  </footer>
 </main>
 </body>
 </html>
