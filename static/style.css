@@ -105,6 +105,16 @@ button { font: inherit; cursor: pointer; border-radius: 10px; padding: .65rem 1.
 .footer a { color: var(--muted); text-underline-offset: 3px; }
 .footer a:hover { color: var(--ink); }
 
+.egg {
+  width: min(30rem, calc(100vw - 2rem)); max-height: calc(100vh - 2rem);
+  padding: 1.25rem; border: 1px solid var(--line); border-radius: 14px;
+  background: var(--panel); color: var(--ink);
+}
+.egg::backdrop { background: rgba(10, 16, 28, .6); }
+.egg-title { margin: 0 0 .75rem; font-size: 1.15rem; }
+.egg-pic img { display: block; width: 100%; height: auto; border-radius: 10px; }
+.egg-note { margin: .75rem 0 1rem; color: var(--muted); }
+
 [hidden] { display: none !important; }
 
 @media (prefers-reduced-motion: reduce) { .meter span { transition: none; } }

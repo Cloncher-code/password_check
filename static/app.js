@@ -4,6 +4,22 @@
 
 const NETWORK_ERROR = "Не удалось связаться с сервером. Повторите попытку.";
 
+// ФТ-12 (CR-02): пасхалка. Шаги — успешные проверки паролей подряд, в этом порядке.
+// Фразы хранятся только как SHA-256, чтобы их не было видно в исходном коде страницы.
+// Сравнение — в браузере, на сервер ничего дополнительно не отправляется (НФТ-05).
+const EGG_STEPS = [
+  "21797d9226a97536ceefe04ccdfecb2d6dc5fade537afc300dc9233949c747f9",
+  "0ff5d83033f603e01de268d66f9755b633ba0b5ac5b385830eab9fc17b9bb042",
+];
+const EGG_IMAGE = "/static/easter/stop-word.jpg";
+const EGG_DELAY_MS = 700;
+
+async function sha256hex(text) {
+  const bytes = new TextEncoder().encode(text.normalize("NFC"));
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("check-form");
   const input = document.getElementById("password");
@@ -17,6 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const levelEl = document.getElementById("level");
   const scoreEl = document.getElementById("score");
   const recsEl = document.getElementById("recommendations");
+  const egg = document.getElementById("egg");
+  const eggPic = document.getElementById("egg-pic");
+  let eggStep = 0;
 
   toggle.hidden = false;
   genBtn.hidden = false;
@@ -63,14 +82,53 @@ document.addEventListener("DOMContentLoaded", () => {
     return { ok: resp.ok, data: await resp.json() };
   }
 
+  function showEgg() {
+    if (!eggPic.firstChild) {              // картинка грузится только при срабатывании
+      const img = document.createElement("img");
+      img.src = EGG_IMAGE;
+      img.alt = "Мем про требования к паролю";
+      img.width = 720;
+      img.height = 764;
+      eggPic.appendChild(img);
+    }
+    egg.showModal();
+  }
+
+  async function trackEgg(password) {
+    if (!window.crypto || !crypto.subtle) { eggStep = 0; return; }  // нет HTTPS/localhost
+    const hash = await sha256hex(password);
+    if (hash === EGG_STEPS[eggStep]) {
+      eggStep += 1;
+    } else {
+      eggStep = hash === EGG_STEPS[0] ? 1 : 0;
+    }
+    if (eggStep === EGG_STEPS.length) {
+      eggStep = 0;
+      setTimeout(showEgg, EGG_DELAY_MS);
+    }
+  }
+
   async function check() {
+    const password = input.value;          // значение на момент нажатия
     try {
-      const { ok, data } = await postJson("/api/v1/password/check", { password: input.value });
-      if (ok) showResult(data); else showError(data.error.message);
+      const { ok, data } = await postJson("/api/v1/password/check", { password });
+      if (ok) {
+        showResult(data);
+        trackEgg(password);
+      } else {
+        eggStep = 0;
+        showError(data.error.message);
+      }
     } catch (e) {
+      eggStep = 0;
       showError(NETWORK_ERROR);
     }
   }
+
+  document.getElementById("egg-close").addEventListener("click", () => egg.close());
+  egg.addEventListener("click", (event) => {   // щелчок по затемнению вокруг окна
+    if (event.target === egg) egg.close();
+  });
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();             // пароль остаётся в поле (в.2 Заказчика)

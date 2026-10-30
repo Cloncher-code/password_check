@@ -190,3 +190,30 @@ def test_static_assets():
     """TC-15 · §7 — CSS и JS отдаются."""
     assert client.get("/static/style.css").status_code == 200
     assert client.get("/static/app.js").status_code == 200
+
+
+# ---------------------------------------------------------------- ФТ-12 (CR-02)
+EGG_PHRASES = ["стоп-слово", "Стоп-слово"]   # шаг 1, шаг 2 — см. СТ v1.2, ФТ-12
+
+
+def test_easter_egg_image():
+    """TC-33 · ФТ-12 — картинка отдаётся, без метаданных, не встроена в страницу."""
+    import io
+    from PIL import Image
+    r = client.get("/static/easter/stop-word.jpg")
+    assert r.status_code == 200 and r.headers["content-type"] == "image/jpeg"
+    assert len(r.content) <= 150 * 1024
+    assert len(Image.open(io.BytesIO(r.content)).getexif()) == 0   # нет EXIF (геоданные и т.п.)
+    assert "stop-word.jpg" not in client.get("/").text            # грузится только по срабатыванию
+
+
+def test_easter_egg_phrases_hidden():
+    """TC-34 · ФТ-12 — в app.js только SHA-256 фраз, в нужном порядке; открытого текста нет."""
+    import hashlib
+    import unicodedata
+    js = client.get("/static/app.js").text
+    hashes = [hashlib.sha256(unicodedata.normalize("NFC", p).encode()).hexdigest()
+              for p in EGG_PHRASES]
+    assert js.index(hashes[0]) < js.index(hashes[1])
+    for phrase in EGG_PHRASES:
+        assert phrase not in js and phrase.lower() not in js

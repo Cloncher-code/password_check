@@ -62,7 +62,7 @@ pip install -r requirements-dev.txt
 ```
 
 4. Ctrl+Shift+P → «Python: Select Interpreter» → `.\.venv\Scripts\python.exe`.
-5. Проверка: колба слева (Testing) → «Run Tests» → 208 зелёных. F5 → «Запустить сервер (uvicorn, отладка)» → http://127.0.0.1:8000.
+5. Проверка: колба слева (Testing) → «Run Tests» → 210 зелёных. F5 → «Запустить сервер (uvicorn, отладка)» → http://127.0.0.1:8000.
 
 ## 7. Ежедневная работа
 
